@@ -10,11 +10,27 @@ export function App () {
 
     console.log('render with name: ', name);
 
-
+    const users = [
+        {
+            userName: 'midudev',
+            name: 'Miguel Ángel Durán',
+            isFollowing: true
+        },
+        {
+            userName: 'pheralb',
+            name: 'Pablo H.',
+            isFollowing: false
+        },
+        {
+            userName: 'yerbes_4',
+            name: 'Manuel Yerbes',
+            isFollowing: true
+        }
+    ]
     return(
         //Este section hace como el React.Fagment
         <section className="App">
-            <TwitterFollowCard userName={name} initialIsFollowing = {true}> 
+            {/* <TwitterFollowCard userName={name} initialIsFollowing = {true}> 
                 Miguel Ángel Durán
             </TwitterFollowCard>
             <TwitterFollowCard userName="pheralb">
@@ -25,7 +41,23 @@ export function App () {
                 setName('pedromichel')
             }}>
                 Cambio nombre
-            </button>
+            </button> */}
+
+            {
+                users.map(user => {
+                    const {userName, name, isFollowing} = user
+                    return (
+                        <TwitterFollowCard
+                            key= {userName}
+                            userName={userName}
+                            initialIsFollowing={isFollowing}
+                        >
+                        {name}       
+
+                        </TwitterFollowCard>
+                    )
+                })
+            }
         </section>
         
     )
