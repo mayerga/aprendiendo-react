@@ -1,0 +1,8 @@
+Inicializar el localstorage
+como utilizar un estado
+como realizar eventos clicks
+repasar el primer proyecto
+prueba técnica de juniors y trainees
+Mejorar lógica de programación
+Practicando lo básico de React
+hook UseEffect
