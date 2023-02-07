@@ -1,40 +1,37 @@
-import {useState} from "react"
-import confetti from "canvas-confetti"
-import {Square} from "./components/Square.jsx"
-import {TURNS} from "./constants.js"
-import { checkWinnerFrom, checkEndGame } from "./logic/board.js"
-import { WinnerModal } from "./components/WinnerModal.jsx"
+import { useState } from 'react'
+import confetti from 'canvas-confetti'
+import { Square } from './components/Square.jsx'
+import { TURNS } from './constants.js'
+import { checkWinnerFrom, checkEndGame } from './logic/board.js'
+import { WinnerModal } from './components/WinnerModal.jsx'
 
-function App() {
+function App () {
   const [board, setBoard] = useState(() => {
     const boardFromStorage = window.localStorage.getItem('board')
-    if(boardFromStorage) return JSON.parse(boardFromStorage)
+    if (boardFromStorage) return JSON.parse(boardFromStorage)
     return Array(9).fill(null)
 //Lo de abajo (ternario) es lo mismo que lo de arriba.
-    //return boardFromStorage ? JSON.parse(boardFromStorage) : Array(9).fill(null)
-    
-  })
+//return boardFromStorage ? JSON.parse(boardFromStorage) : Array(9).fill(null)
+})
   console.log(board)
 
   const [turn, setTurn] = useState(() => {
     const turnFromStorage = window.localStorage.getItem('turn')
     return turnFromStorage ?? TURNS.X
   })
-  
+
 //null es que no hay ganador y false es que hay un empate
   const [winner, setWinner] = useState(null)
 
   const resetGame = () => {
     //Le pasamos las mismas props y tenemos el mismo estado. Así la interfaz se replica
-        setBoard(Array(9).fill(null))
-        setTurn(TURNS.X)
-        setWinner(null)
+    setBoard(Array(9).fill(null))
+    setTurn(TURNS.X)
+    setWinner(null)
 
-        window.localStorage.removeItem('board')
-        window.localStorage.removeItem('turn')
-      }
-
-      
+    window.localStorage.removeItem('board')
+    window.localStorage.removeItem('turn')
+  }
 
   const updateBoard = (index) => {
     //No actualizamos esta posición. Si ya tiene algo o si hay un ganador
@@ -43,7 +40,7 @@ function App() {
     const newBoard = [...board]
 //El nuevo board recibe el índice y le ponemos el valor del turno actual
     newBoard[index] = turn
-    setBoard(newBoard);
+    setBoard(newBoard)
 //Cambiamos el turno. si el turno es igual a l de las X, significa que el nuevo turno será el de los O, si no, el de las X
     const newTurn = turn === TURNS.X ? TURNS.O : TURNS.X
     setTurn(newTurn) //Le pasamos el nuevo valor con newTurn
@@ -52,11 +49,11 @@ function App() {
     window.localStorage.setItem('turn', newTurn)
     //Revisar si hay un ganador
     const newWinner = checkWinnerFrom(newBoard)
-    if(newWinner) {
+    if (newWinner) {
       confetti()
       setWinner(newWinner) //Actualiza el estado. La actualización del estado es asíncrono
       //alert(`El ganador es ${newWinner}`)
-    } else if(checkEndGame(newBoard)) {
+    } else if (checkEndGame(newBoard)) {
       setWinner(false) //Empate al final del juego
     }
   }
@@ -69,7 +66,7 @@ function App() {
       <section className='game'>
         {
           board.map((square, index) => {
-            return(
+            return (
 //Square es el componente para cada uno de los cuadritos
               <Square
                 key={index}
@@ -81,18 +78,17 @@ function App() {
                 {square}
               </Square>
             )
-          }) 
+          })
         }
       </section>
 
-      <section className="turn">
+      <section className='turn'>
         <Square isSelected={turn === TURNS.X}>{TURNS.X}</Square>
         <Square isSelected={turn === TURNS.O}>{TURNS.O}</Square>
       </section>
 
       <WinnerModal resetGame={resetGame} winner={winner}/>
     </main>
-    
   )
 }
 
